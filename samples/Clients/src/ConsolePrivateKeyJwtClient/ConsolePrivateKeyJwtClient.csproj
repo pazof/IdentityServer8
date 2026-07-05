@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <AssemblyVersion>8.1.0.0</AssemblyVersion>
+    <FileVersion>8.1.0.0</FileVersion>
+    <InformationalVersion>8.1.0-alpha.171+Branch.develop.Sha.da2987cb01112daf4921052899b0e1ba7d228de4</InformationalVersion>
+    <Version>8.1.0-alpha.171</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Update="client.p12">

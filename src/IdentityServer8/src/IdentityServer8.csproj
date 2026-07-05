@@ -1,23 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <IsPackable>true</IsPackable>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <ContinuousIntegrationBuild Condition="'$(TF_BUILD)' == 'true'">True</ContinuousIntegrationBuild>
-        <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">True</ContinuousIntegrationBuild>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="IdentityModel" />
-        <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\Security\IdentityServer8.Security\IdentityServer8.Security.csproj" />
-        <ProjectReference Include="..\..\Storage\src\IdentityServer8.Storage.csproj" />
-    </ItemGroup>
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>8.1.0.0</AssemblyVersion>
+    <FileVersion>8.1.0.0</FileVersion>
+    <InformationalVersion>8.1.0-alpha.171+Branch.develop.Sha.da2987cb01112daf4921052899b0e1ba7d228de4</InformationalVersion>
+    <Version>8.1.0-alpha.171</Version>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ContinuousIntegrationBuild Condition="'$(TF_BUILD)' == 'true'">True</ContinuousIntegrationBuild>
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">True</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="IdentityModel" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Security\IdentityServer8.Security\IdentityServer8.Security.csproj" />
+    <ProjectReference Include="..\..\Storage\src\IdentityServer8.Storage.csproj" />
+  </ItemGroup>
 </Project>
