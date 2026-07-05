@@ -17,7 +17,7 @@ namespace IdentityServer8.Extensions;
 internal static class IEnumerableExtensions
 {
     [DebuggerStepThrough]
-    public static bool IsNullOrEmpty<T>(this IEnumerable<T> list)
+    public static bool CollectionIsNullOrEmpty<T>(this IEnumerable<T> list)
     {
         if (list == null)
         {

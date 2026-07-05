@@ -70,7 +70,7 @@ public class ApiScope : Resource
         Name = name;
         DisplayName = displayName;
 
-        if (!userClaims.IsNullOrEmpty())
+        if (!userClaims.CollectionIsNullOrEmpty())
         {
             foreach (var type in userClaims)
             {
