@@ -20,6 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IdentityModel.Client;
+using static IdentityModel.OidcConstants;
 using IdentityServer8;
 using IdentityServer8.Configuration;
 using IdentityServer8.Extensions;
@@ -329,7 +330,35 @@ public class IdentityServerPipeline
         object extra = null)
     {
         Parameters prms = extra is null ? null : Parameters.FromObject(extra);
-        var url = new RequestUrl(AuthorizeEndpoint).CreateAuthorizeUrl(
+
+        string url;
+        if (clientId == null || responseType == null)
+        {
+            url = AuthorizeEndpoint;
+            if (clientId != null) url = url.AddQueryString(AuthorizeRequest.ClientId, clientId);
+            if (responseType != null) url = url.AddQueryString(AuthorizeRequest.ResponseType, responseType);
+            if (scope != null) url = url.AddQueryString(AuthorizeRequest.Scope, scope);
+            if (redirectUri != null) url = url.AddQueryString(AuthorizeRequest.RedirectUri, redirectUri);
+            if (state != null) url = url.AddQueryString(AuthorizeRequest.State, state);
+            if (nonce != null) url = url.AddQueryString(AuthorizeRequest.Nonce, nonce);
+            if (loginHint != null) url = url.AddQueryString(AuthorizeRequest.LoginHint, loginHint);
+            if (acrValues != null) url = url.AddQueryString(AuthorizeRequest.AcrValues, acrValues);
+            if (responseMode != null) url = url.AddQueryString(AuthorizeRequest.ResponseMode, responseMode);
+            if (codeChallenge != null) url = url.AddQueryString(AuthorizeRequest.CodeChallenge, codeChallenge);
+            if (codeChallengeMethod != null) url = url.AddQueryString(AuthorizeRequest.CodeChallengeMethod, codeChallengeMethod);
+            if (prms != null)
+            {
+                var extraQuery = prms.ToString();
+                if (!string.IsNullOrWhiteSpace(extraQuery))
+                {
+                    url = url.AddQueryString(extraQuery);
+                }
+            }
+
+            return url;
+        }
+
+        url = new RequestUrl(AuthorizeEndpoint).CreateAuthorizeUrl(
             clientId: clientId,
             responseType: responseType,
             scope: scope,
@@ -345,12 +374,12 @@ public class IdentityServerPipeline
         return url;
     }
 
-    public AuthorizeResponse ParseAuthorizationResponseUrl(string url)
+    public IdentityModel.Client.AuthorizeResponse ParseAuthorizationResponseUrl(string url)
     {
-        return new AuthorizeResponse(url);
+        return new IdentityModel.Client.AuthorizeResponse(url);
     }
 
-    public async Task<AuthorizeResponse> RequestAuthorizationEndpointAsync(
+    public async Task<IdentityModel.Client.AuthorizeResponse> RequestAuthorizationEndpointAsync(
         string clientId,
         string responseType,
         string scope = null,
@@ -383,7 +412,7 @@ public class IdentityServerPipeline
             return null;
         }
 
-        return new AuthorizeResponse(redirect);
+        return new IdentityModel.Client.AuthorizeResponse(redirect);
     }
 }
 

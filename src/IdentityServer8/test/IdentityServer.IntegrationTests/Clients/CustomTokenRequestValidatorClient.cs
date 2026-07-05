@@ -125,8 +125,7 @@ public class CustomTokenRequestValidatorClient
     }
     private void ValidateCustomFields(TokenResponse response)
     {
-        var fields = GetFields(response.Json);
+        var fields = GetFields(response.Json ?? throw new InvalidOperationException("Response does not contain JSON"));
         fields["custom"].ToString().Should().Be("custom");
-
     }
 }

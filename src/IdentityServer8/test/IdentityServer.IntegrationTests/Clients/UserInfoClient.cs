@@ -203,7 +203,8 @@ public class UserInfoEndpointClient
         });
 
         //roles = ((JArray)userInfo.Json["role"]).Select(x => x.ToString()).ToArray();
-        roles = userInfo.Json.TryGetStringArray("role").ToArray();
+        roles = (userInfo.Json ?? throw new InvalidOperationException("Response does not contain JSON"))
+        .TryGetStringArray("role").ToArray();
         roles.Length.Should().Be(2);
         roles.Should().Contain("Geek");
         roles.Should().Contain("Developer");

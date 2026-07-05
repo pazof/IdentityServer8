@@ -114,6 +114,12 @@ public class PersistedGrantStoreTests : IntegrationTest<PersistedGrantStoreTests
     {
         using (var context = new PersistedGrantDbContext(options, StoreOptions))
         {
+            var store = new PersistedGrantStore(context, FakeLogger<PersistedGrantStore>.Create());
+            (await store.GetAllAsync(new PersistedGrantFilter
+            {
+                SubjectId = "sub1"
+            })).ToList().Count.Should().Be(0);
+
             context.PersistedGrants.Add(CreateTestObject(sub: "sub1", clientId: "c1", sid: "s1", type: "t1").ToEntity());
             context.PersistedGrants.Add(CreateTestObject(sub: "sub1", clientId: "c1", sid: "s1", type: "t2").ToEntity());
             context.PersistedGrants.Add(CreateTestObject(sub: "sub1", clientId: "c1", sid: "s2", type: "t1").ToEntity());
