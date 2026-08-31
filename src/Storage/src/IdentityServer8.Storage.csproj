@@ -5,8 +5,8 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <AssemblyVersion>8.1.0.0</AssemblyVersion>
     <FileVersion>8.1.0.0</FileVersion>
-    <InformationalVersion>8.1.0-pazofrc004</InformationalVersion>
-    <Version>8.1.0-pazofrc004</Version>
+    <InformationalVersion>8.1.0-alpha.175+Branch.develop.Sha.7fee13a586758ad39dd800c6806f88d4fe604e7c</InformationalVersion>
+    <Version>8.1.0-alpha.175</Version>
   </PropertyGroup>
   <PropertyGroup>
     <ContinuousIntegrationBuild Condition="'$(TF_BUILD)' == 'true'">True</ContinuousIntegrationBuild>

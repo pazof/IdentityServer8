@@ -3,8 +3,8 @@
     <OutputType>Exe</OutputType>
     <AssemblyVersion>8.1.0.0</AssemblyVersion>
     <FileVersion>8.1.0.0</FileVersion>
-    <InformationalVersion>8.1.0-alpha.171+Branch.develop.Sha.da2987cb01112daf4921052899b0e1ba7d228de4</InformationalVersion>
-    <Version>8.1.0-alpha.171</Version>
+    <InformationalVersion>8.1.0-alpha.175+Branch.develop.Sha.7fee13a586758ad39dd800c6806f88d4fe604e7c</InformationalVersion>
+    <Version>8.1.0-alpha.175</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\build\Program.Partial.cs" Link="Program.Partial.cs" />

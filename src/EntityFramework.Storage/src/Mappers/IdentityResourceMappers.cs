@@ -19,14 +19,6 @@ namespace IdentityServer8.EntityFramework.Mappers
     /// </summary>
     public static class IdentityResourceMappers
     {
-        static IdentityResourceMappers()
-        {
-            Mapper = new MapperConfiguration(cfg => cfg.AddProfile<IdentityResourceMapperProfile>(), NullLoggerFactory.Instance)
-                .CreateMapper();
-        }
-
-        internal static IMapper Mapper { get; }
-
         /// <summary>
         /// Maps an entity to a model.
         /// </summary>
@@ -34,7 +26,45 @@ namespace IdentityServer8.EntityFramework.Mappers
         /// <returns></returns>
         public static Models.IdentityResource ToModel(this IdentityResource entity)
         {
-            return entity == null ? null : Mapper.Map<Models.IdentityResource>(entity);
+            if (entity == null)
+            {
+                return null;
+            }
+
+            var model = new Models.IdentityResource
+            {
+                Enabled = entity.Enabled,
+                Name = entity.Name,
+                DisplayName = entity.DisplayName,
+                Description = entity.Description,
+                Required = entity.Required,
+                Emphasize = entity.Emphasize,
+                ShowInDiscoveryDocument = entity.ShowInDiscoveryDocument,
+            };
+
+            if (entity.UserClaims != null)
+            {
+                foreach (var claim in entity.UserClaims)
+                {
+                    if (claim?.Type != null)
+                    {
+                        model.UserClaims.Add(claim.Type);
+                    }
+                }
+            }
+
+            if (entity.Properties != null)
+            {
+                foreach (var property in entity.Properties)
+                {
+                    if (property?.Key != null)
+                    {
+                        model.Properties[property.Key] = property.Value;
+                    }
+                }
+            }
+
+            return model;
         }
 
         /// <summary>
@@ -44,7 +74,51 @@ namespace IdentityServer8.EntityFramework.Mappers
         /// <returns></returns>
         public static IdentityResource ToEntity(this Models.IdentityResource model)
         {
-            return model == null ? null : Mapper.Map<IdentityResource>(model);
+            if (model == null)
+            {
+                return null;
+            }
+
+            var entity = new IdentityResource
+            {
+                Enabled = model.Enabled,
+                Name = model.Name,
+                DisplayName = model.DisplayName,
+                Description = model.Description,
+                Required = model.Required,
+                Emphasize = model.Emphasize,
+                ShowInDiscoveryDocument = model.ShowInDiscoveryDocument,
+                UserClaims = new List<IdentityResourceClaim>(),
+                Properties = new List<IdentityResourceProperty>(),
+            };
+
+            if (model.UserClaims != null)
+            {
+                foreach (var claim in model.UserClaims)
+                {
+                    if (claim != null)
+                    {
+                        entity.UserClaims.Add(new IdentityResourceClaim { Type = claim });
+                    }
+                }
+            }
+
+            if (model.Properties != null)
+            {
+                foreach (var property in model.Properties)
+                {
+                    if (property.Key != null)
+                    {
+                        entity.Properties.Add(new IdentityResourceProperty
+                        {
+                            Key = property.Key,
+                            Value = property.Value,
+                        });
+                    }
+                }
+            }
+
+            return entity;
         }
     }
 }
