@@ -374,4 +374,33 @@ public class ScopeStoreTests : IntegrationTest<ScopeStoreTests, ConfigurationDbC
         Assert.Contains(resources.ApiScopes, x => x.Name == visibleApiScope.Name);
         Assert.Contains(resources.ApiScopes, x => x.Name == hiddenApiScope.Name);
     }
+
+    [Theory, MemberData(nameof(TestDatabaseProviders))]
+    public async Task GetAllResources_WhenIdentityResourceHasClaimsAndProperties_DoesNotThrowAndReturnsMappedResource(DbContextOptions<ConfigurationDbContext> options)
+    {
+        var identityResource = CreateIdentityTestResource();
+        identityResource.Properties["regression"] = "discovery";
+
+        using (var context = new ConfigurationDbContext(options, StoreOptions))
+        {
+            context.IdentityResources.Add(identityResource.ToEntity());
+            context.SaveChanges();
+        }
+
+        Resources resources = null;
+        Exception exception = null;
+        using (var context = new ConfigurationDbContext(options, StoreOptions))
+        {
+            var store = new ResourceStore(context, FakeLogger<ResourceStore>.Create());
+            exception = await Record.ExceptionAsync(async () => resources = await store.GetAllResourcesAsync());
+        }
+
+        Assert.Null(exception);
+        Assert.NotNull(resources);
+
+        var mapped = resources.IdentityResources.Single(x => x.Name == identityResource.Name);
+        Assert.NotNull(mapped);
+        Assert.Contains(JwtClaimTypes.Subject, mapped.UserClaims);
+        Assert.Equal("discovery", mapped.Properties["regression"]);
+    }
 }

@@ -19,14 +19,6 @@ namespace IdentityServer8.EntityFramework.Mappers
     /// </summary>
     public static class ApiResourceMappers
     {
-        static ApiResourceMappers()
-        {
-            Mapper = new MapperConfiguration(cfg => cfg.AddProfile<ApiResourceMapperProfile>(), NullLoggerFactory.Instance)
-                .CreateMapper();
-        }
-
-        internal static IMapper Mapper { get; }
-
         /// <summary>
         /// Maps an entity to a model.
         /// </summary>
@@ -34,7 +26,74 @@ namespace IdentityServer8.EntityFramework.Mappers
         /// <returns></returns>
         public static Models.ApiResource ToModel(this ApiResource entity)
         {
-            return entity == null ? null : Mapper.Map<Models.ApiResource>(entity);
+            if (entity == null)
+            {
+                return null;
+            }
+
+            var model = new Models.ApiResource
+            {
+                Enabled = entity.Enabled,
+                Name = entity.Name,
+                DisplayName = entity.DisplayName,
+                Description = entity.Description,
+                ShowInDiscoveryDocument = entity.ShowInDiscoveryDocument,
+                AllowedAccessTokenSigningAlgorithms = ParseAllowedSigningAlgorithms(entity.AllowedAccessTokenSigningAlgorithms),
+            };
+
+            if (entity.UserClaims != null)
+            {
+                foreach (var claim in entity.UserClaims)
+                {
+                    if (claim?.Type != null)
+                    {
+                        model.UserClaims.Add(claim.Type);
+                    }
+                }
+            }
+
+            if (entity.Properties != null)
+            {
+                foreach (var property in entity.Properties)
+                {
+                    if (property?.Key != null)
+                    {
+                        model.Properties[property.Key] = property.Value;
+                    }
+                }
+            }
+
+            if (entity.Scopes != null)
+            {
+                foreach (var scope in entity.Scopes)
+                {
+                    if (scope?.Scope != null)
+                    {
+                        model.Scopes.Add(scope.Scope);
+                    }
+                }
+            }
+
+            if (entity.Secrets != null)
+            {
+                foreach (var secret in entity.Secrets)
+                {
+                    if (secret == null)
+                    {
+                        continue;
+                    }
+
+                    model.ApiSecrets.Add(new Models.Secret
+                    {
+                        Description = secret.Description,
+                        Value = secret.Value,
+                        Expiration = secret.Expiration,
+                        Type = secret.Type,
+                    });
+                }
+            }
+
+            return model;
         }
 
         /// <summary>
@@ -44,7 +103,107 @@ namespace IdentityServer8.EntityFramework.Mappers
         /// <returns></returns>
         public static ApiResource ToEntity(this Models.ApiResource model)
         {
-            return model == null ? null : Mapper.Map<ApiResource>(model);
+            if (model == null)
+            {
+                return null;
+            }
+
+            var entity = new ApiResource
+            {
+                Enabled = model.Enabled,
+                Name = model.Name,
+                DisplayName = model.DisplayName,
+                Description = model.Description,
+                ShowInDiscoveryDocument = model.ShowInDiscoveryDocument,
+                AllowedAccessTokenSigningAlgorithms = JoinAllowedSigningAlgorithms(model.AllowedAccessTokenSigningAlgorithms),
+                UserClaims = new List<ApiResourceClaim>(),
+                Properties = new List<ApiResourceProperty>(),
+                Scopes = new List<ApiResourceScope>(),
+                Secrets = new List<ApiResourceSecret>(),
+            };
+
+            if (model.UserClaims != null)
+            {
+                foreach (var claim in model.UserClaims)
+                {
+                    if (claim != null)
+                    {
+                        entity.UserClaims.Add(new ApiResourceClaim { Type = claim });
+                    }
+                }
+            }
+
+            if (model.Properties != null)
+            {
+                foreach (var property in model.Properties)
+                {
+                    if (property.Key != null)
+                    {
+                        entity.Properties.Add(new ApiResourceProperty
+                        {
+                            Key = property.Key,
+                            Value = property.Value,
+                        });
+                    }
+                }
+            }
+
+            if (model.Scopes != null)
+            {
+                foreach (var scope in model.Scopes)
+                {
+                    if (scope != null)
+                    {
+                        entity.Scopes.Add(new ApiResourceScope { Scope = scope });
+                    }
+                }
+            }
+
+            if (model.ApiSecrets != null)
+            {
+                foreach (var secret in model.ApiSecrets)
+                {
+                    if (secret == null)
+                    {
+                        continue;
+                    }
+
+                    entity.Secrets.Add(new ApiResourceSecret
+                    {
+                        Description = secret.Description,
+                        Value = secret.Value,
+                        Expiration = secret.Expiration,
+                        Type = secret.Type,
+                    });
+                }
+            }
+
+            return entity;
+        }
+
+        private static ICollection<string> ParseAllowedSigningAlgorithms(string source)
+        {
+            var list = new HashSet<string>();
+            if (!String.IsNullOrWhiteSpace(source))
+            {
+                source = source.Trim();
+                foreach (var item in source.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Distinct())
+                {
+                    list.Add(item);
+                }
+            }
+
+            return list;
+        }
+
+        private static string JoinAllowedSigningAlgorithms(ICollection<string> source)
+        {
+            if (source == null || !source.Any())
+            {
+                return null;
+            }
+
+            return source.Aggregate((x, y) => $"{x},{y}");
         }
     }
 }

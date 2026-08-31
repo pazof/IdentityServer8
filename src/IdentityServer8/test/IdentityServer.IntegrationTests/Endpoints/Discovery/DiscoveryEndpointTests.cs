@@ -13,13 +13,19 @@
 using FluentAssertions;
 using IdentityModel.Client;
 using IdentityServer.IntegrationTests.Common;
+using IdentityServer8.EntityFramework.DbContexts;
+using IdentityServer8.EntityFramework.Mappers;
 using IdentityServer8;
 using IdentityServer8.Configuration;
 using IdentityServer8.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 using JsonWebKey = Microsoft.IdentityModel.Tokens.JsonWebKey;
@@ -241,5 +247,55 @@ public class DiscoveryEndpointTests
         });
 
         result.Issuer.Should().Be("https://грант.рф");
+    }
+
+    [Fact]
+    [Trait("Category", Category)]
+    public async Task Discovery_document_should_be_returned_when_using_entity_framework_resource_store()
+    {
+        var dbName = $"discovery-regression-{Guid.NewGuid():N}";
+
+        var identityResource = new IdentityResource(
+            name: "openid",
+            displayName: "OpenID",
+            userClaims: new[] { "sub", "name" })
+        {
+            Description = "Regression guard for discovery endpoint",
+            ShowInDiscoveryDocument = true,
+        };
+        identityResource.Properties["source"] = "discovery-test";
+
+        var pipeline = new IdentityServerPipeline();
+        pipeline.OnPostConfigureServices += services =>
+        {
+            services.AddIdentityServerBuilder()
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseInMemoryDatabase(dbName);
+                });
+        };
+        pipeline.OnPostConfigure += app => SeedConfigurationStore(app, identityResource);
+        pipeline.Initialize();
+
+        var response = await pipeline.BackChannelClient.GetAsync(IdentityServerPipeline.DiscoveryEndpoint);
+        var payload = await response.Content.ReadAsStringAsync();
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK, $"Discovery endpoint must not fail. Payload: {payload}");
+
+        var json = JObject.Parse(payload);
+        var scopes = json["scopes_supported"]?.Values<string>().ToArray();
+
+        scopes.Should().NotBeNull();
+        scopes.Should().Contain(identityResource.Name);
+    }
+
+    private static void SeedConfigurationStore(IApplicationBuilder app, IdentityResource identityResource)
+    {
+        using var scope = app.ApplicationServices.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+        dbContext.Database.EnsureCreated();
+
+        dbContext.IdentityResources.Add(identityResource.ToEntity());
+        dbContext.SaveChanges();
     }
 }
