@@ -21,7 +21,7 @@ namespace IdentityServer8.EntityFramework.Mappers
     {
         static PersistedGrantMappers()
         {
-            Mapper = new MapperConfiguration(cfg =>cfg.AddProfile<PersistedGrantMapperProfile>())
+            Mapper = new MapperConfiguration(cfg =>cfg.AddProfile<PersistedGrantMapperProfile>(), NullLoggerFactory.Instance)
                 .CreateMapper();
         }
 

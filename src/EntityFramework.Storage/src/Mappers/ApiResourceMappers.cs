@@ -21,7 +21,7 @@ namespace IdentityServer8.EntityFramework.Mappers
     {
         static ApiResourceMappers()
         {
-            Mapper = new MapperConfiguration(cfg => cfg.AddProfile<ApiResourceMapperProfile>())
+            Mapper = new MapperConfiguration(cfg => cfg.AddProfile<ApiResourceMapperProfile>(), NullLoggerFactory.Instance)
                 .CreateMapper();
         }
 

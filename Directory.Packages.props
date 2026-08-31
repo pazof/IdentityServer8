@@ -21,7 +21,7 @@
     <PackageVersion Include="AspNetCore.HealthChecks.OpenIdConnectServer" Version="$(AspnetVersion)" />
     <PackageVersion Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspnetVersion)" />
     <PackageVersion Include="AspNetCore.HealthChecks.UI.Client" Version="$(AspnetVersion)" />
-    <PackageVersion Include="AutoMapper" Version="13.0.1 " />
+    <PackageVersion Include="AutoMapper" Version="16.2.0" />
     <PackageVersion Include="Azure.Extensions.AspNetCore.DataProtection.Keys" Version="1.6.3" />
     <PackageVersion Include="Azure.Identity" Version="1.21.0" />
     <PackageVersion Include="Azure.Security.KeyVault.Certificates" Version="4.9.0" />
@@ -78,7 +78,7 @@
     </PackageVersion>
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(AspnetVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(AspnetMinorVersion)" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(AspnetMinorVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(AspnetVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="$(AspnetMinorVersion)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -161,17 +161,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageVersion>
-    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="$(AspnetVersion)" PrivateAssets="All" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="$(AspnetVersion)" PrivateAssets="All" />
-    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.9" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.301" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.9" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.300" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.100" PrivateAssets="All" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.102" PrivateAssets="All" />
     <PackageVersion Include="Serilog" Version="4.3.1" />
-    <PackageVersion Include="Serilog.AspNetCore" Version="10.0.0" />
-    <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageVersion Include="System.Security.Principal.Windows" Version="5.0.0" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
   
   </ItemGroup>

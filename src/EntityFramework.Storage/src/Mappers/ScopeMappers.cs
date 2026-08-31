@@ -21,7 +21,7 @@ namespace IdentityServer8.EntityFramework.Mappers
     {
         static ScopeMappers()
         {
-            Mapper = new MapperConfiguration(cfg => cfg.AddProfile<ScopeMapperProfile>())
+            Mapper = new MapperConfiguration(cfg => cfg.AddProfile<ScopeMapperProfile>(), NullLoggerFactory.Instance)
                 .CreateMapper();
         }
 

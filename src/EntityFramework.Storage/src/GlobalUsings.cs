@@ -25,6 +25,7 @@ global using IdentityServer8.Stores.Serialization;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging.Abstractions;
 global using Microsoft.Extensions.Logging;
 global using System.Buffers;
 global using System.Runtime.CompilerServices;

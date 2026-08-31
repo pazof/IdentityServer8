@@ -19,7 +19,7 @@ namespace IdentityServer8.EntityFramework.Mappers
     {
         static ClientMappers()
         {
-            Mapper = new MapperConfiguration(cfg => cfg.AddProfile<ClientMapperProfile>())
+            Mapper = new MapperConfiguration(cfg => cfg.AddProfile<ClientMapperProfile>(), NullLoggerFactory.Instance)
                 .CreateMapper();
         }
 
