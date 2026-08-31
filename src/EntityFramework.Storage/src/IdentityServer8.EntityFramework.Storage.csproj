@@ -3,10 +3,10 @@
     <Description>EntityFramework persistence layer for IdentityServer8</Description>
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>8.1.0.0</AssemblyVersion>
-    <FileVersion>8.1.0.0</FileVersion>
-    <InformationalVersion>8.1.0-alpha.171+Branch.develop.Sha.da2987cb01112daf4921052899b0e1ba7d228de4</InformationalVersion>
-    <Version>8.1.0-alpha.171</Version>
+    <AssemblyVersion>8.0.5.0</AssemblyVersion>
+    <FileVersion>8.0.5.0</FileVersion>
+    <InformationalVersion>8.0.5-pazofrc004</InformationalVersion>
+    <Version>8.0.5-pazofrc004</Version>
   </PropertyGroup>
   <PropertyGroup>
     <ContinuousIntegrationBuild Condition="'$(TF_BUILD)' == 'true'">True</ContinuousIntegrationBuild>
